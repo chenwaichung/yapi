@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  yapi:
+    build: .
+    image: chenwaichung/yapi
+    container_name: yapi
+    command: node /api/vendors/server/app.js
+    environment:
+      - LOG_PATH=/tmp/yapi.log
+      - HOME=/home
+    ports:
+      - 8888:3000
+    volumes:
+      - ./data/yapi/log/yapi.log:/home/vendors/log
+    depends_on:
+      - mongodb
+    links:
+      - mongodb:mongodb
+    restart: always
+
+  mongodb:
+    image: mongo:3.5
+    container_name: yapi_db
+    volumes:
+      - ./data/yapi/mongodb:/data/db
+    restart: always

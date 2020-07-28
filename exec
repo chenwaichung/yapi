@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# 运行容器中的命令
+docker exec -it -t yapi /bin/sh -c "$@"

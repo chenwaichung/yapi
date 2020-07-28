@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import json
+import time
+import simplehttp
+import optparse
+
+parser = optparse.OptionParser()
+
+# owner name
+parser.add_option('-o', '--owner',
+    action="store", dest="owner",
+    help="owner name", default="")
+
+# repo name
+parser.add_option('-r', '--repo',
+    action="store", dest="repo",
+    help="repo name", default="")
+
+# parse args
+options, args = parser.parse_args()
+
+if (options.owner == '') or (options.repo == ''):
+    print "params is empty, please check."
+    exit(1)
+
+# get tag list from github
+url = "https://api.github.com/repos/%s/%s/tags" % (options.owner, options.repo)
+resp = simplehttp.get(url)
+if resp.statusCode == 200:
+    # new version
+    tags = json.loads(resp.content)
+    if len(tags) > 0:
+        print tags[0]['name'].replace("v", "")
+else:
+    # default version
+    print "1.9.2" 
